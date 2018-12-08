@@ -181,10 +181,10 @@ class HelloFastCGI : virtual public fastcgi::Component, virtual public fastcgi::
             collection.find_one(document{} << "_id" << oid << finalize);
             if (doc) {
                 auto dv = doc->view();
-                std::string text = dv["text"].get_utf8().value.to_string();
-                int rating = dv["rating"].get_int32().value;
-                long long created = dv["created"].get_date().value.count() / 1000;
                 std::string oid = dv["_id"].get_oid().value.to_string();
+                std::string text = dv["text"].get_utf8().value.to_string();
+                int rating = dv["rating"].get_int32().value + likes[oid];
+                long long created = dv["created"].get_date().value.count() / 1000;
                 std::stringstream build_resp;
                 build_resp << "{\n\"created\": " << created << ",\n";
                 build_resp << "\"vote\": \"/upvote/" + oid + "\",\n";

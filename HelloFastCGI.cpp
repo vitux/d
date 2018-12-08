@@ -155,15 +155,15 @@ class HelloFastCGI : virtual public fastcgi::Component, virtual public fastcgi::
                     bool isFirst = true;
                     std::set<std::string> was; 
                     for (auto&& doc: docs) {
-                        if (!isFirst) {
-                            build_resp << ",\n";
-                        }
-                        isFirst = false;
                         std::string oid = doc["_id"].get_oid().value.to_string();
                         if (was.find(oid) != was.end()) {
                             continue;
                         }
                         was.insert(oid);
+                        if (!isFirst) {
+                            build_resp << ",\n";
+                        }
+                        isFirst = false;
                         build_resp << "\"/anecdote/" + oid + "\"";
                     }
                     build_resp << "\n]\n}";
